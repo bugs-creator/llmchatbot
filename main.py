@@ -11,18 +11,30 @@ from transformers import (
 )
 from peft import LoraConfig
 from trl import SFTTrainer
+from dataset import llama_dataset
+
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--model', type=str,default="NousResearch/Llama-2-7b-chat-hf")
+parser.add_argument('--dataset',type=str,default="mlabonne/guanaco-llama2-1k")
+parser.add_argument('--dataset_path',type=str,default=None)
+parser.add_argument('--output_dir',type=str,default="outputs")
+args = parser.parse_args()
 
 
 # Model from Hugging Face hub
-base_model = "NousResearch/Llama-2-7b-chat-hf"
+base_model = args.model
 
 # New instruction dataset
-guanaco_dataset = "mlabonne/guanaco-llama2-1k"
+guanaco_dataset = args.dataset
 
 # Fine-tuned model
-new_model = "llama-2-7b-chat-guanaco"
-
-dataset = load_dataset(guanaco_dataset, split="train")
+new_model = args.output_dir
+if args.dataset_path is None:
+    dataset = load_dataset(guanaco_dataset, split="train")
+else:
+    dataset = llama_dataset.LlamaDataset(file=args.dataset_path)
 
 compute_dtype = getattr(torch, "float16")
 
@@ -88,5 +100,5 @@ trainer.model.save_pretrained(new_model)
 trainer.tokenizer.save_pretrained(new_model)
 
 from tensorboard import notebook
-log_dir = "results/runs"
-notebook.start("--logdir {} --port 4000".format(log_dir))
+# log_dir = "/root/tf-logs/"
+# notebook.start("--logdir {} --port 4000".format(log_dir))
