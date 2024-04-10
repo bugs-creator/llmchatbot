@@ -35,7 +35,9 @@ new_model = args.output_dir
 if args.dataset_path is None:
     dataset = load_dataset(guanaco_dataset, split="train")
 else:
-    dataset = llama_dataset.LlamaDataset(file=args.dataset_path)
+    # dataset = llama_dataset.LlamaDataset(file=args.dataset_path)
+    dataset = load_dataset("csv", data_files=args.dataset_path)
+    dataset = dataset.map(llama_dataset.transform_conversation)['train']
 
 compute_dtype = getattr(torch, "float16")
 
@@ -67,7 +69,7 @@ peft_params = LoraConfig(
 )
 
 training_params = TrainingArguments(
-    output_dir="./results",
+    output_dir="/root/autodl-tmp/llm_training_outputs",
     num_train_epochs=1,
     per_device_train_batch_size=args.batch_size,
     gradient_accumulation_steps=1,
@@ -81,7 +83,7 @@ training_params = TrainingArguments(
     max_grad_norm=0.3,
     max_steps=-1,
     warmup_ratio=0.03,
-    group_by_length=True,
+    group_by_length=False,
     lr_scheduler_type="constant",
     report_to="tensorboard"
 )
