@@ -19,7 +19,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--model', type=str,default="NousResearch/Llama-2-7b-chat-hf")
 parser.add_argument('--dataset',type=str,default="mlabonne/guanaco-llama2-1k")
 parser.add_argument('--dataset_path',type=str,default=None)
-parser.add_argument('--output_dir',type=str,default="outputs")
+parser.add_argument('--output_dir',type=str,default="/root/autodl-tmp/outputs")
 parser.add_argument('--batch_size',type=int,default=1)
 args = parser.parse_args()
 
@@ -69,13 +69,13 @@ peft_params = LoraConfig(
 )
 
 training_params = TrainingArguments(
-    output_dir="/root/autodl-tmp/llm_training_outputs",
+    output_dir="/root/autodl-tmp/llm_training_outputs_update_wonhs",
     num_train_epochs=1,
     per_device_train_batch_size=args.batch_size,
     gradient_accumulation_steps=1,
     optim="paged_adamw_32bit",
-    save_steps=25,
-    logging_steps=25,
+    save_steps=1000,
+    logging_steps=1000,
     learning_rate=2e-4,
     weight_decay=0.001,
     fp16=False,

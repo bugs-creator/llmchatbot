@@ -5,9 +5,7 @@ def transform_conversation(example):
     # print(example)
     question = example['question']
     answer = example['answer']
-   
 
-    reformatted_segments = []
 
    
     prompt = "You are a helpful, respectful and honest health acknowledge assistant.\n\n If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information."
