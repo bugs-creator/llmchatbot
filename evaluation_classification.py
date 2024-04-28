@@ -13,10 +13,12 @@ from peft import LoraConfig
 from trl import SFTTrainer
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
+# function to generate classification prompt
 def generate_prompt(question):
     prompt = f"You are an expect classifier to classify healthcare and non-healthcare related questions. Please classify wether this question : \"{question}\" is healthcare related or not. Only answer yes or no."
     return prompt
 
+# convert string answer to one-hot annotation (0 or 1), 0 for non-healthcare related question, 1 for healthcare related
 def search_answer(result):
     split_list = result.split(" ")
     if "no" or "No" in split_list:
@@ -24,20 +26,26 @@ def search_answer(result):
     else:
         return 1
 
+# based on llm model with input question to classify whether the input question is healthcare related or not
 def classification_pred(pipe,question ):
     prompt = generate_prompt(question)
     result = pipe(question)[0]['generated_text']
     label = search_answer(result)
     return label
 
+# set to float16
 compute_dtype = getattr(torch, "float16")
+
+# load basic config
 quant_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_quant_type="nf4",
     bnb_4bit_compute_dtype=compute_dtype,
     bnb_4bit_use_double_quant=False,
 )
+# model path
 base_model = "/root/autodl-tmp/llm_training_outputs_update/checkpoint-1000"
+# load model
 model = AutoModelForCausalLM.from_pretrained(
     base_model,
     quantization_config=quant_config,
@@ -46,13 +54,17 @@ model = AutoModelForCausalLM.from_pretrained(
 model.config.use_cache = False
 model.config.pretraining_tp = 1
 
+# load tokenizer
 tokenizer = AutoTokenizer.from_pretrained(base_model, trust_remote_code=True)
 pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=128)
 
+# read the test data set
 df = pd.read_csv("/root/autodl-tmp/dataset/testset/classification.csv")
 
+# load ground truth label
 true_labels = list(df["label"])
 predicted_labels = []
+# for each question, let llm with prompt engineering to determine the label
 for question in df["question"]:
     label = classification_pred(pipe, question)
     pred_label.append(label)
