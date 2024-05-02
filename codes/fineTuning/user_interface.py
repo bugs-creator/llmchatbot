@@ -15,7 +15,9 @@ from peft import LoraConfig
 from trl import SFTTrainer
 from utils import *
 
-MODEL_PATH = ""
+MODEL_PATH = "/root/autodl-tmp/llm_training_outputs_update_wonhs/checkpoint-44000"
+
+
 compute_dtype = getattr(torch, "float16")
 quant_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -67,7 +69,7 @@ def message_and_history(input, history):
     history = history or []
     output = test(input, history)
     history.append((input, output))
-    return history, history
+    return output, history
 
 block = gr.Blocks(theme=gr.themes.Monochrome())
 with block:
