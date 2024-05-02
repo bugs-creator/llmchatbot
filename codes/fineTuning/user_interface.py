@@ -23,7 +23,7 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument('--model_path',type=str,default="/root/autodl-tmp/llm_training_outputs_update_wonhs/checkpoint-44000")  # option that takes a value
 parser.add_argument('--enable_classification',action='store_true')
-parser.add_argument('--max_length',type=int,default=1024)
+parser.add_argument('--max_length',type=int,default=500)
 args = parser.parse_args()
 
 
@@ -65,7 +65,7 @@ def test(msg, history: list = None):
     prompt = chatbot_answer(msg,history)
     print(f"[prompt: {prompt}]")
     try:
-        result = pipe(prompt)[0]['generated_text']
+        result = pipe(prompt,temperature=0.7, top_p=0.9,do_sample=True)[0]['generated_text']
     # if the user input a very long question, we will ask the user to re-input
     except ValueError:
         return "Exceed Max Input Length, Please re-input your question"
