@@ -23,7 +23,7 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument('--model_path',type=str,default="/root/autodl-tmp/llm_training_outputs_update_wonhs/checkpoint-44000")  # option that takes a value
 parser.add_argument('--enable_classification',action='store_true')
-parser.add_argument('--max_length',type=int,default=4096)
+parser.add_argument('--max_length',type=int,default=1024)
 args = parser.parse_args()
 
 
@@ -53,13 +53,17 @@ pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_le
 
 
 def test(msg, history: list = None):
-    classification_result = classification_pred(pipe,msg)
+    print(f"[user message: {msg}]")
 
-    if classification_result == 0 and args.enable_classification:
-        output = "Sorry, this question is not healthcare related. Please ask me healthcare related questions."
-        return output
+    if args.enable_classification:
+        classification_result = classification_pred(pipe,msg)
+
+        if classification_result == 0:
+            output = "Sorry, this question is not healthcare related. Please ask me healthcare related questions."
+            return output
     
     prompt = chatbot_answer(msg,history)
+    print(f"[prompt: {prompt}]")
     try:
         result = pipe(prompt)[0]['generated_text']
     # if the user input a very long question, we will ask the user to re-input
@@ -72,6 +76,7 @@ def test(msg, history: list = None):
         output =  ".".join(result[index+7:].split('.')[:int(num_seq*2/3)])
     else:
         output =  ".".join(result[index+7:].split('.')[:-2])
+    print(f"[output: {output}]")
     return output
 
 
