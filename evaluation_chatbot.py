@@ -13,9 +13,17 @@ from peft import LoraConfig
 from trl import SFTTrainer
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import pandas as pd
+import nltk
+# from nltk.tokenize import sent_tokenize, word_tokenize 
+# nltk.download('punkt')
 
+def tokenize(sentence):
+    sentence = sentence.replace("."," ").replace(","," ").replace("\""," ").replace("\'"," ").replace("?"," ")
+    return sentence.split(" ")
 def generate_prompt(question):
-    prompt = f"<s>[INST]You are an expect classifier to classify healthcare and non-healthcare related questions. Please classify wether this question : \"{question}\" is healthcare related or not. Only answer yes or no.[/INST]"
+    question = f"{question}"
+    # result = pipe(f"<s>[INST] {prompt} [/INST]")
+    prompt = f"<s>[INST]{question}[/INST]"
     return prompt
 
 def search_answer(result):
@@ -39,7 +47,7 @@ quant_config = BitsAndBytesConfig(
     bnb_4bit_compute_dtype=compute_dtype,
     bnb_4bit_use_double_quant=False,
 )
-base_model = "/root/autodl-tmp/models/Llama-2-7b-chat-hf"
+base_model = "/root/autodl-tmp/llm_training_outputs_update_wonhs/checkpoint-44000"
 model = AutoModelForCausalLM.from_pretrained(
     base_model,
     quantization_config=quant_config,
@@ -51,13 +59,14 @@ model.config.pretraining_tp = 1
 tokenizer = AutoTokenizer.from_pretrained(base_model, trust_remote_code=True)
 pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=200)
 
-df = pd.read_csv("/root/autodl-tmp/dataset/testset/classification.csv")
+df = pd.read_csv("/root/autodl-tmp/dataset/testset/chatbot.csv")
 
-true_labels = list(df["label"])
+true_labels = list(df["answer"])
 predicted_labels = []
+n = 0
 for question in df["question"]:
     # label = classification_pred(pipe, question)
-    # print(question)
+    print(question)
     prompt = generate_prompt(question)
 
     result = pipe(prompt)
@@ -65,26 +74,23 @@ for question in df["question"]:
     result = result[0]['generated_text']
     index = result.rfind("[/INST]")
     result = result[index+7:]
-    print(result)
-    label = search_answer(result)
-    predicted_labels.append(label)
+    # print(result)
+    # label = search_answer(result)
+    predicted_labels.append(result)
+    n += 1
+    if n == 3:
+        break
 
-# Calculate accuracy
-accuracy = accuracy_score(true_labels, predicted_labels)
-print("Accuracy:", accuracy)
+predicted_labels = [tokenize(i) for i in predicted_labels]
+true_labels = [tokenize(i) for i in true_labels]
 
-# Calculate precision
-precision = precision_score(true_labels, predicted_labels)
-print("Precision:", precision)
+score_total = 0
+for i in range(3):
+    BLEUscore = nltk.translate.bleu_score.sentence_bleu([true_labels[i]], predicted_labels[i])
+    print(BLEUscore)
+    score_total += BLEUscore
 
-# Calculate recall
-recall = recall_score(true_labels, predicted_labels)
-print("Recall:", recall)
-
-# Calculate F1 score
-f1 = f1_score(true_labels, predicted_labels)
-print("F1 Score:", f1)
-
+print(score_total/3)
 print(predicted_labels)
 
-print(true_labels)
+# 0.06804575746232461
