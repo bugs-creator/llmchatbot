@@ -55,10 +55,10 @@ pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_le
 
 
 def search(query):
-    cmd=f'python ../retrieval_model/search.py --path="{args["retrieval_data_path"]}" --method=api --query="{query}"'
+    cmd=f'python ../retrieval_model/search.py --path="{args.retrieval_data_path}" --method=api --query="{query}"'
     result = json.loads(os.popen(cmd).read())
     if result["result"].__len__!=0:
-        f=open(os.path.join(args["retrieval_data_path"],"documents", result["result"][0][0]))
+        f=open(os.path.join(args.retrieval_data_path,"documents", result["result"][0][0]))
         return f.read()
     else:
         return ""
