@@ -53,6 +53,27 @@ You can use the below command to connect to the large language model:
 python search.py -m api
 ```
 
+### Dataset Retrieval
+Both versions of our NHS condition scrapers are listed here
+
+Unstructured: the following extracts all article information form all listed conditions (fast run-time):
+```shell
+python crawler_nhs_unstructured.py
+```
+
+Structured: the following improves upon the above by pulling the results in a "question" and "answer" format which is better for LLM training (slower run-time):
+```shell
+python crawler_nhs_structured.py
+```
+
+In both cases, a ```--is_demonstration True``` flag runs a subset of the conditions for testing purposes, i.e.
+
+```shell
+python crawler_nhs_unstructured.py --is_demonstration True
+python crawler_nhs_structured.py --is_demonstration True
+```
+
+
 ## demo
 
 ## Acknowledgement
