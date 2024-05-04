@@ -214,3 +214,5 @@ cython_debug/
 .idea
 
 results
+
+./test.py

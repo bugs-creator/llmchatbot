@@ -33,13 +33,18 @@ def classification_pred(pipe,question ):
     return label
 
 # based on question and history chat log to answer questions
-def chatbot_answer(question, history: list=None):
+def chatbot_answer(question, history: list=None,reference=None):
     system_prompt = "You are a helpful, respectful and honest health acknowledge assistant.\n\n If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information."
     input_ = f"<s>[INST] <<SYS>>{system_prompt}<</SYS>>"
+    input_history=""
     if history is not None:
         for i, (meg, ans) in enumerate(history):
             
             input_ += meg + "[/INST]" + ans + "</s><s>[INST]"
-    input_ += question + "[/INST]"
+
+    if reference is not None:
+        input_+=f'Please answer the question "{question}" based on {reference}. [/INST]'
+    else:
+        input_ += question + "[/INST]"
     
     return input_
