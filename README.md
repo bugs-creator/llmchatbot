@@ -14,6 +14,13 @@
 
 ## codes
 ### Llama-2 Fine-tuning
+
+Firstly, downloading the pre-trained Llama-2-7B model from huggingface by running the following code. Please replace the token and local_dir by your own token and the path where you want save the model
+```
+python codes/fineTune/download.py
+```
+
+
 We fine-tune LLama-2-7B by c adaptation technique called LoRA based on the combination of public dataset and private dataset. 
 
 ```
