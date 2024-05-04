@@ -26,7 +26,7 @@ parser.add_argument('--model_path',type=str,default="/root/autodl-tmp/llm_traini
 parser.add_argument('--enable_classification',action='store_true')
 parser.add_argument('--max_length',type=int,default=500)
 parser.add_argument('--enable_retrieval',action='store_true')
-parser.add_argument('--retrieval_data_path',type=int,default="../retrieval_model/search.py")
+parser.add_argument('--retrieval_data_path',type=str,default="../retrieval_model/search.py")
 args = parser.parse_args()
 
 
