@@ -27,6 +27,7 @@ parser.add_argument('--enable_classification',action='store_true')
 parser.add_argument('--max_length',type=int,default=500)
 parser.add_argument('--enable_retrieval',action='store_true')
 parser.add_argument('--retrieval_data_path',type=str,default="../retrieval_model/search.py")
+parser.add_argument('--enable_history',action='store_true')
 args = parser.parse_args()
 
 
@@ -81,6 +82,8 @@ def test(msg, history: list = None):
         if reference.__len__()>=400:
             reference=reference[:400]
 
+    if not args.enable_history:
+        history=[]
     while history.__len__()!=0:
 
         prompt = chatbot_answer(msg, history,reference)
