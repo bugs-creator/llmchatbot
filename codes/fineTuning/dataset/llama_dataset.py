@@ -1,6 +1,7 @@
 from torch.utils.data import Dataset
 import csv
 
+# function used to convert dataset format to required format
 def transform_conversation(example):
     # print(example)
     question = example['question']
