@@ -24,14 +24,14 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument('--model_path',type=str,default="/root/autodl-tmp/llm_training_outputs_update_wonhs/checkpoint-44000")  # option that takes a value
 parser.add_argument('--enable_classification',action='store_true')
-parser.add_argument('--max_length',type=int,default=500)
+parser.add_argument('--max_length',type=int,default=200)
 parser.add_argument('--enable_retrieval',action='store_true')
-parser.add_argument('--retrieval_data_path',type=str,default="../retrieval_model/search.py")
+parser.add_argument('--retrieval_data_path',type=str,default="..\\retrieval_model\\data")
 parser.add_argument('--enable_history',action='store_true')
 args = parser.parse_args()
 
 
-MODEL_PATH = "/root/autodl-tmp/llm_training_outputs_update_wonhs/checkpoint-44000"
+MODEL_PATH = args.model_path
 
 
 compute_dtype = getattr(torch, "float16")
