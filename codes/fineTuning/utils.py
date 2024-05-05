@@ -34,7 +34,9 @@ def classification_pred(pipe,question ):
 
 # based on question and history chat log to answer questions
 def chatbot_answer(question, history: list=None,reference=None):
-    system_prompt = "You are a helpful, respectful and honest health acknowledge assistant.\n\n If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information."
+    # system_prompt = "You are a helpful, respectful and honest health acknowledge assistant.\n\n If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information."
+    system_prompt = "You are a helpful, respectful and honest health acknowledge assistant."
+
     input_ = f"<s>[INST] <<SYS>>{system_prompt}<</SYS>>"
     input_history=""
     if history is not None:
