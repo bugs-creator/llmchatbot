@@ -11,6 +11,7 @@
   
 
 ## Introduction
+Based on Llama-2, we fine-tuned with self-collected and public healthcare Q&A datasets using LoRA. With utilizing the strong zero-shot transfer performance of LLMs, we develop a healthcare question classification model to avoid answer irrelevant questions. Also, to reduce LLMs' hallucination, we introduce a information retrieval model to guide the LLMs output based on healthcare corpus.
 
 ## Coding
 ### Llama-2 Fine-tuning
