@@ -15,6 +15,7 @@ except:
     tqdm = lambda x: x
 
 if __name__ == '__main__':
+    # initialize parser
     parser = argparse.ArgumentParser('search')
     parser.add_argument('-m', '--method', type=str, default="manual",
                         help='choose method')
@@ -30,10 +31,11 @@ if __name__ == '__main__':
     args = parser.parse_args().__dict__
 
 
-
+    # if the corpus is none
     if args["corpus"]==None:
+        # read corpus from path
         args["corpus"]=os.path.join(args["path"],"corpus.json")
-
+    # construct corpus
     corpus = readJSON(args['corpus'])
 
     if args['method'] == "manual":
@@ -44,7 +46,7 @@ if __name__ == '__main__':
             print("\nResults for query [{}]  time cost: {}".format(query, time.time() - start))
             [print("{} {} {}".format(i + 1, result[0], result[1])) for i, result in enumerate(results)]
             query = input("Enter query: ")
-
+    # if mode is evaluation
     elif args['method'] == "evaluation":
         path = args.get('path')
         queries, y_label = utils.readEvaluation(os.path.join(path, 'files'))
@@ -63,6 +65,7 @@ if __name__ == '__main__':
             result = evaluation.evaluation(y_pred, y_label[i], unjudged)
             for ii in range(7):
                 score[ii] += result[ii]
+        # print results
         print("\nTime cost:    ", time.time() - start, "\n")
         print("Evaluation results:")
         print("Precision:       ", score[0] / queries.__len__())
@@ -74,8 +77,10 @@ if __name__ == '__main__':
         print("NDCG:            ", score[6] / queries.__len__())
 
         print("\nsaving in output.txt...")
+        # save output
         with open("output.txt", "wb") as f:
             f.write(output.encode("gbk"))
+    # if using api
     elif args['method']=="api":
         query = args['query']
         start = time.time()
@@ -85,6 +90,6 @@ if __name__ == '__main__':
         print(json.dumps({"time":time.time()-start,"result":results}))
         # [print("{} {} {}".format(i + 1, result[0], result[1])) for i, result in enumerate(results)]
 
-
+    # if not in given method, do nothing
     else:
         print("no such method")
