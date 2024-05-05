@@ -30,7 +30,7 @@ python codes/fineTune/main.py --model=$MODEL_PATH --dataset_path=$DATASET_PATH -
 
 ### Information Retreival Model
 
-The dataset is available here (add the link to the data). Please download it and put it under the retrieval_model file.
+The dataset is available [here](https://drive.google.com/file/d/1mp-8Ko4WX1Lf0Qd3hCQ7vK9Y4VwyZ2ZX/view). Please download it and put it under the retrieval_model file.
 
 When you first run this program, this will automatically generate ```corpus.json```, which contains the indexing result. When you run this program again, it will read this file, unless you delete this file.
 
