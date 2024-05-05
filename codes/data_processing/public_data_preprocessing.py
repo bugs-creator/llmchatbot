@@ -34,7 +34,7 @@ def parser_all_questions(save_path: str, data_path: str):
     all_questions = []
     all_answers = []
 
-    for file_path in get_all_files_path("/root/autodl-tmp/dataset/MedQuAD"):
+    for file_path in get_all_files_path(data_path):
         print(file_path)
         res,ans = xml_parser(file_path)
         all_questions.extend(res)
