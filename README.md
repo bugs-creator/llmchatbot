@@ -29,4 +29,12 @@ python codes/fineTune/main.py --model=$MODEL_PATH --dataset_path=$DATASET_PATH -
 
 ## demo
 
+You can run the chatbot with GUI in `code/fineTuning` with:
+
+```shell
+python user_interface.py \
+--
+```
+
+
 ## Acknowledgement
