@@ -4,15 +4,15 @@
 
  ## Quick Start
 
-- [Introduction](#intro)
-- [Coding](#codes)
+- [Introduction](#Introduction)
+- [Coding](#Coding)
 - [Demo](#demo)
 - [Acknowledgement](#Acknowledgement)
   
 
-## intro
+## Introduction
 
-## codes
+## Coding
 ### Llama-2 Fine-tuning
 
 Firstly, downloading the pre-trained Llama-2-7B model from huggingface by running the following code. Please replace the token and local_dir by your own token and the path where you want save the model
@@ -82,6 +82,11 @@ You can run the chatbot with GUI in `code/fineTuning` with:
 python user_interface.py \
 --
 ```
+
+You may refer to the demo below.
+
+https://github.com/bugs-creator/llmchatbot/assets/72725463/43b509eb-79af-4751-8006-079631fa8fb4
+
 
 
 ## Acknowledgement
