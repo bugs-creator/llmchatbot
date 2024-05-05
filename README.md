@@ -90,3 +90,4 @@ https://github.com/bugs-creator/llmchatbot/assets/72725463/43b509eb-79af-4751-80
 
 
 ## Acknowledgement
+The chatbot is developed based on [Llama-2](https://llama.meta.com/) from Meta and fine-tuned with [LoRA](https://arxiv.org/abs/2106.09685) with the combination of private and public dataset.
