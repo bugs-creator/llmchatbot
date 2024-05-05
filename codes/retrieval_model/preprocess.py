@@ -10,7 +10,7 @@ try:
 except:
     tqdm = lambda x: x
 
-DOCUMENT_PATH = 'COMP3009J-corpus-small/documents'
+DOCUMENT_PATH = 'data/documents'
 
 
 def indexing(path, type="small"):

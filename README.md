@@ -51,8 +51,10 @@ After it complete, it will generate ```output.txt```.
 You can use the below command to connect to the large language model:
 
 ```shell
-python search.py -m api
+python search.py -m api --query=<query>
 ```
+
+This will return a json format of result. 
 
 ### Dataset Retrieval
 Both versions of our NHS condition scrapers are listed here
@@ -81,8 +83,15 @@ You can run the chatbot with GUI in `code/fineTuning` with:
 
 ```shell
 python user_interface.py \
---
+--model_path=<path to model> \
+--enable_classification \
+--max_length=<max response length> \
+--enable_retrieval \
+--retrieval_data_path=<path to retrieval corpus> \
+--enable_history
 ```
+
+Use `--enable_retrieval` to activate retrieval model. Use `--enable_history` to record message.
 
 You may refer to the demo below.
 
